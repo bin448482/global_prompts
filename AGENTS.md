@@ -2,29 +2,29 @@
 
 ## 一、项目基本信息
 
-- 项目名称：`global_prompts`，依据仓库目录名推断；仓库内未找到 README 或包清单确认正式名称。
-- 项目用途与当前范围：仓库保存供 AI 工作流使用的 Markdown 提示词。目前可确认的内容是项目指导文档初始化流程和 Orca 主编排流程；是否还有其他消费方或目标待确定。
-- 本仓库自身的技术栈与运行环境：当前内容为 Markdown 文档；未发现源代码、依赖清单、构建配置或仓库自身的程序运行环境，因此不适用应用框架和依赖说明。
-- 文档所描述的消费方运行环境：`启动主编排.md` 描述由 Orca CLI 管理的协调端和 worker 工作流，并涉及 Git worktree、PowerShell 环境变量及 OpenCode v2 配置约定。其默认配置为 `WORKER_AGENT=codex`、`WORKER_WORKTREE=new-child`、`SNAPSHOT_DIR=D:/0-development/projects/dada-study-agent/tests/testdata/snapshots`。这是消费方流程的配置，不代表本仓库自身的运行环境。
-- 主要入口与关系：`项目初始化提示词.md` 是生成项目 `AGENTS.md` / `claude.md` 的说明入口，其规则区是本文件全局规则的上游母本；`启动主编排.md` 是 Orca 协调流程提示词，定义任务派发、等待、验收和回收。根目录 `claude.md` 仅通过 `@AGENTS.md` 引用本指南。
+- 项目名称：`global_prompts`，依据仓库目录名推断；未找到 README 或包清单确认正式名称。
+- 项目用途与当前范围：维护供 AI 工作流使用的 Markdown 提示词。目前包括项目指导文档初始化流程和 Orca 主编排流程；其他目标或消费方待确定。
+- 本仓库自身的技术栈与运行环境：仓库内容为 Markdown 文档；未发现源代码、依赖清单、构建配置或仓库自身的程序运行环境，应用框架不适用。
+- 文档所描述的消费方运行环境：`启动主编排.md` 描述 Orca CLI 协调工作流，涉及 Git worktree、PowerShell 环境变量以及 OpenCode v2 配置。消费方默认值为 `WORKER_AGENT=codex`、`WORKER_WORKTREE=new-child`、`SNAPSHOT_DIR=D:/0-development/projects/dada-study-agent/tests/testdata/snapshots`；这些不代表本仓库自身环境。
+- 主要入口与文档关系：`项目初始化提示词.md` 是生成项目 `AGENTS.md` / `CLAUDE.md` 的流程入口，其规则区是本指南规则区的上游母本；`启动主编排.md` 是 Orca 协调流程入口，说明任务派发、等待、验收和回收。`CLAUDE.md` 仅通过 `@AGENTS.md` 引用本指南，不能替代本指南独立使用。
 - 项目特有约束与已知限制：
-  - `项目初始化提示词.md` 要求将其 `规则区` 标记内原文逐字写入根 `AGENTS.md`；修改规则时还要求同步维护母本及生成项目的对应规则区。
-  - `启动主编排.md` 要求用户明确说“开始”“开始编排”或“开始执行”并给出目标和范围后才启动 Orca 操作；协调端不得自行指定或覆盖模型，不得传递 `--model` 或其他模型参数，也不得读写、复制或合并 OpenCode 模型配置。
-  - Orca 协调默认 agent 为 `codex`，默认 worktree 类型为 `new-child`；Task 可指定 Worker agent/worktree，但不能指定模型。worker 实际 agent、配置作用域或模型无法确认时，提示词要求暂停派发并报告。
-  - `SNAPSHOT_DIR` 是指向另一项目 `D:/0-development/projects/dada-study-agent/tests/testdata/snapshots` 的硬编码绝对路径；按提示词要求，附加截图路径必须先确认文件真实可读，不得伪造。
-  - 协调流程限制读取凭据、token、cookie、学习档案或敏感数据；失败、证据不足或验收未过时要保留现场，不得声称成功或擅自释放、删除。
-  - 目前没有仓库代码或消费方部署信息；提示词面向的具体使用团队和运行环境待确定。
+  - 初始化提示词要求规则区原样写入生成项目的根 `AGENTS.md`；修改规则时，要同步维护母本及所有已生成项目中的规则区。
+  - Orca 流程仅在用户明确说“开始”“开始编排”或“开始执行”并提供目标和范围后启动。协调端不得指定或覆盖模型、传递 `--model` 参数，或读写、复制、合并 OpenCode 模型配置。
+  - 默认 worker agent 为 `codex`，默认 worktree 为 `new-child`；worker 的实际 agent、参数传递方式或有效配置无法确认时，暂停派发并报告。
+  - `SNAPSHOT_DIR` 是指向另一项目 `D:/0-development/projects/dada-study-agent/tests/testdata/snapshots` 的硬编码路径；附加截图路径前必须确认文件可读，不得伪造路径。
+  - Orca 流程禁止读取凭据、token、cookie、学习档案或敏感数据；失败、证据不足或验收未过时须保留现场，不得宣称成功或擅自释放、删除。
+  - 目前未发现代码、消费方部署信息或使用团队说明；更广泛的消费方环境待确定。
 
 ## 二、根目录索引
 
-- `AGENTS.md`：本仓库指南，集中维护项目事实、目录索引、全局规则和命令/验证说明。规则区逐字来源为 `项目初始化提示词.md`；本文件不是该规则区的母本。
-- `claude.md`：Claude 指导入口，内容仅为 `@AGENTS.md`；不包含独立规则，需与 `AGENTS.md` 一起使用。
-- `启动主编排.md`：Orca coordinator 的工作流提示词。规定待命和启动门槛、`WORKER_AGENT`/`WORKER_WORKTREE`/`SNAPSHOT_DIR` 默认值、OpenCode 模型配置限制、Task 必填字段、截图可选引用、事件等待和启动异常诊断、独立验收、合并后复验、release/rm 回收及失败时保留现场的条件；实际运行命令和前提见第四部分。文档描述的消费方环境不等同于本仓库环境。
-- `项目初始化提示词.md`：项目指导文档初始化说明和规则区上游母本。规定先按仓库事实识别项目、逐目录建立文档、不得臆造命令或读取敏感值，并要求规则区原样复制和逐字校验；嵌入的 PowerShell 校验脚本用于验证生成结果。
-- `.git/`：Git 版本控制元数据，不是项目文档或代码目录，不建立指导文件。
-- `skills/`、`.claude/skills/`、`.agents/skills/`：当前均不存在；规则区提及的 skill 同步要求仅在后续确有 skill 开发时适用，按规则不创建空目录。
+- `AGENTS.md`：本仓库指南，维护项目事实、根目录索引、全局规则和命令/验证说明。规则区原文来自 `项目初始化提示词.md`，该文件是母本。
+- `CLAUDE.md`：Claude 指导入口，仅包含 `@AGENTS.md`；规则与项目说明以本指南为准。
+- `启动主编排.md`：Orca coordinator 工作流提示词。规定待命和启动门槛、`WORKER_AGENT` / `WORKER_WORKTREE` / `SNAPSHOT_DIR` 默认值、OpenCode 模型配置限制、Task 字段、可选截图引用、事件等待与异常诊断、独立验收、合并后复验、release/rm 回收和失败时保留现场的条件；实际外部命令见第四部分。
+- `项目初始化提示词.md`：项目指导文档初始化入口及规则区母本。规定项目事实核查、逐目录文档覆盖、敏感信息限制、规则逐字复制及校验脚本。
+- `.git/`：Git 版本控制元数据，不是项目内容目录，按规则排除，不建立指导文档。
+- `skills/`、`.claude/skills/`、`.agents/skills/`：当前均不存在；规则区提及的 skill 同步约束仅在后续开发 skill 时适用，按规则不创建空目录。
 
-当前没有承载项目内容的子目录，因此指导文档覆盖根目录；若后续增加承载内容的目录，按本文件规则在该目录及必要的中间层目录建立配套文档。
+当前没有项目内容子目录，指导文档覆盖根目录。新增承载项目内容的目录时，应按规则为其及必要的中间层目录建立索引文档。
 
 ## 三、全局工作规则与编码规范
 <!-- RULES:BEGIN -->
@@ -81,9 +81,9 @@
 - 根目录 `AGENTS.md` 保存全局工作规则。
 - 子目录 `AGENTS.md` 不是重复根规则的地方，而是该目录的索引：说明目录用途、列出当前文件/子目录功能，并记录改动后需要同步更新的索引要求。
 - 如果新增、删除、改名、移动该目录下的文件或子目录，必须同步更新对应目录的 `AGENTS.md` 索引。
-- 每个目录的 `claude.md` 只包含 `@AGENTS.md`。
+- 每个目录的 `CLAUDE.md` 只包含 `@AGENTS.md`。
 - 根目录 `AGENTS.md` 的规则区若有上游母本（例如项目初始化提示词），以母本为唯一来源：修改规则时，必须同时更新母本和所有已生成项目的 `AGENTS.md`，保持逐字一致，不得只改其中一处。
-- 不为了满足规范创建空目录。只有当目录承载真实代码、脚本、测试、文档或数据说明时，才创建该目录及对应的 `AGENTS.md` / `claude.md`。
+- 不为了满足规范创建空目录。只有当目录承载真实代码、脚本、测试、文档或数据说明时，才创建该目录及对应的 `AGENTS.md` / `CLAUDE.md`。
 
 开发或修改 skills/ 下的 skill 时，必须同步更新 .claude/skills/ 和 .agents/skills/ 的对应运行时入口或镜像，并验证三处指向同一套工作流语义；如果某处使用链接或 wrapper，不要复制第二份正文，但要确保入口仍指向最新源 skill。
 
@@ -137,7 +137,7 @@ function normalizeQuote(raw: QuoteRecord): NormalizedQuote {
 <!-- RULES:END -->
 ## 四、命令与验证
 
-- 本仓库：未发现已配置的安装、运行、构建、检查或测试命令；未发现代码、脚本或测试配置。
-- 文档内一次性校验：`项目初始化提示词.md` 提供 PowerShell 规则区逐字比较脚本。执行目录为待初始化项目根目录，需将 `$promptPath` 指向该提示词文件并确保 `AGENTS.md`、`claude.md` 已生成。本次已在本仓库根目录执行适配路径后的校验；结果记录在本次任务报告中。
-- 消费方 Orca 运维命令：`启动主编排.md` 记录 `orca orchestration worker-start --help`、`orca orchestration run-create`、`orca terminal rename`、`orca orchestration worker-start`、`orca orchestration check --wait`、按诊断条件使用的 `worker-list` / `terminal read` / `terminal send`，以及完成后的 `worker-release`、`orca worktree rm` 和普通 `git merge`。这些是该提示词描述的消费方流程，不是本仓库构建/测试命令；仅在用户明确启动编排、已确认 CLI 参数和 agent 传递方式、记录 Run 与验收台账后执行。本次未执行这些外部运维命令。
-- 提示词中的 Orca 命令依赖 Orca CLI；OpenCode 模型由 worker 启动时实际读取的 `opencode.json` / `opencode.jsonc` 决定。协调端不得指定模型参数或修改模型配置；无法确认有效配置时按提示词暂停派发。
+- 本仓库未发现已配置的安装、运行、构建、检查或测试命令，也未发现代码、脚本或测试配置。
+- 文档内一次性规则校验：`项目初始化提示词.md` 提供 PowerShell 脚本，用于比较提示词与根 `AGENTS.md` 的规则区、检查 8 个规则小节和代码块数量，并检查同级 `CLAUDE.md`。执行目录为项目根目录，需设置实际的提示词路径。本次已在本仓库根目录执行适配路径后的脚本，结果见任务报告。
+- 消费方 Orca 运维命令：`启动主编排.md` 中记录 `orca orchestration worker-start --help`、`orca orchestration run-create`、`orca terminal rename`、`orca orchestration worker-start`、`orca orchestration check --wait --timeout-ms 90000`、诊断用 `worker-list` / `terminal read` / `terminal send`、完成后的 `worker-release` / `orca worktree rm`，以及普通 `git merge`。这些不是本仓库构建或测试命令；仅在用户明确启动编排、确认 CLI 与 agent 参数传递方式并建立验收记录后执行。本次未执行这些外部命令。
+- Orca 命令依赖 Orca CLI；OpenCode 模型取自 worker 实际读取的 `opencode.json` / `opencode.jsonc`。协调端不得传递模型参数或修改模型配置；无法确认有效配置时按流程暂停派发。
