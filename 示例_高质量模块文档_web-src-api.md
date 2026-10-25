@@ -1,7 +1,7 @@
 # 示例：高质量模块文档基准（web/src/api）
 
 > 来源：dada-study-agent 仓库、`transcript-memory-map` worktree 的 `web/src/api/AGENTS.md`，经目录代码审查产出并作为格式基准。
-> 用途：`目录代码审查_主编排_v3.md` 第 8 节（`PROJECT_DOC` 结构）的**达标示例**。仅作参照，不含本仓库规则；原文件路径与内容保持原样，便于对照。
+> 用途：`目录代码审查L1_主编排.md` 第 8 节（`PROJECT_DOC` 结构）的**达标示例**。仅作参照，不含本仓库规则；原文件路径与内容保持原样，便于对照。
 > 引用时请注意：下文所有路径均相对 dada-study-agent 仓库，不是本仓库路径。
 
 ---
