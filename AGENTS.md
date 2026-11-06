@@ -5,7 +5,7 @@
 - 项目名称：`global_prompts`，依据仓库目录名推断；未找到 README 或包清单确认正式名称。
 - 项目用途与当前范围：维护供 AI 工作流使用的 Markdown 提示词，作为跨项目复用的公共提示词库。目前包括项目指导文档初始化流程、Orca 通用主编排流程，以及**第一层公共提示词**「目录代码审查与模块知识库」（`目录代码审查L1_主编排.md`）；其他目标或消费方待确定。
 - 本仓库自身的技术栈与运行环境：仓库内容为 Markdown 文档；未发现源代码、依赖清单、构建配置或仓库自身的程序运行环境，应用框架不适用。
-- 文档所描述的消费方运行环境：`启动主编排.md` 描述 Orca CLI 协调工作流，涉及 Git worktree、PowerShell 环境变量以及 OpenCode v2 配置。消费方默认值为 `WORKER_AGENT=codex`、`WORKER_WORKTREE=new-child`、`SNAPSHOT_DIR=tests/testdata/snapshots`；这些不代表本仓库自身环境。
+- 文档所描述的消费方运行环境：`启动主编排.md` 描述 Orca CLI 协调工作流，涉及 Git worktree、PowerShell 环境变量以及 OpenCode v2 配置。消费方默认值为 `WORKER_AGENT=opencode2`、`WORKER_WORKTREE=new-child`、`SNAPSHOT_DIR=tests/testdata/snapshots`；这些不代表本仓库自身环境。
 - 主要入口与文档关系：`项目初始化提示词.md` 是生成项目 `AGENTS.md` / `CLAUDE.md` 的流程入口，其规则区是本指南规则区的上游母本；`启动主编排.md` 是 Orca 协调流程入口，说明任务派发、等待、验收和回收；`目录代码审查L1_主编排.md` 是**第一层公共提示词**，定义目录审查编排的通用流程，项目专属内容（单元组划分、路径、base ref、已知事实）拆到同目录的 `目录审查单元组划分_示例_dada-study-agent.md` 实例文件。`CLAUDE.md` 仅通过 `@AGENTS.md` 引用本指南，不能替代本指南独立使用。
 - 项目特有约束与已知限制：
   - 初始化提示词要求规则区原样写入生成项目的根 `AGENTS.md`；修改规则时，要同步维护母本及所有已生成项目中的规则区。
@@ -21,7 +21,7 @@
 
 - `AGENTS.md`：本仓库指南，维护项目事实、根目录索引、全局规则和命令/验证说明。规则区原文来自 `项目初始化提示词.md`，该文件是母本。
 - `CLAUDE.md`：Claude 指导入口，仅包含 `@AGENTS.md`；规则与项目说明以本指南为准。
-- `启动主编排.md`：Orca coordinator 工作流提示词。规定待命和启动门槛、`WORKER_AGENT` / `WORKER_WORKTREE` / `SNAPSHOT_DIR` 默认值、OpenCode 模型配置限制、Task 字段、可选截图引用、事件等待与异常诊断、独立验收、合并后复验、release/rm 回收和失败时保留现场的条件；实际外部命令见第四部分。
+- `启动主编排.md`：Orca coordinator 工作流提示词。规定待命和启动门槛、`WORKER_AGENT` / `WORKER_WORKTREE` / `SNAPSHOT_DIR` 默认值、模型配置由 worker 环境维护且不是派发前置条件、Task 字段、可选截图引用、事件等待与异常诊断、独立验收、合并后复验、release/rm 回收和失败时保留现场的条件；实际外部命令见第四部分。
 - `项目初始化提示词.md`：项目指导文档初始化入口及规则区母本。规定项目事实核查、逐目录文档覆盖、敏感信息限制、规则逐字复制及校验脚本。
 - `目录代码审查L1_主编排.md`：**第一层公共提示词**，定义「目录代码审查与模块知识库」的通用编排流程。规定全局配置（7 项，均有实际消费点）、P1/P2/P3 优先级、写隔离与读不隔离的区别、`current` 仅限单 Task、待命闸门、启动序列（Run → 基线 → 单元组 → G0 门 → worktree → Task → 派发）、审查单元组划分与并行/串行规则、预创建 worktree 校验、Task 规格模板与命令序列、`PROJECT_DOC` 的 C1-C4 核心区块与条件区块、渐进更新与重建、符号锚点（不写行号）、索引与审查结论物理分离、单 Task 验收判据、合并与回收、失败保留现场、非 Git 目录处置和汇报格式。不含任何项目专属内容。
 - `目录审查单元组划分_示例_dada-study-agent.md`：第一层提示词的**项目实例**。给出 dada-study-agent 的 15 个单元组划分（组名、目录、模块边界理由、区块集合、文件数、已有文档）与可直接替换的全局配置（`REVIEW_ROOT`、base ref、报告目录）及 9 条必须登记不得自行处置的已知事实。换项目时以同结构新建实例文件，不修改第一层。
@@ -146,4 +146,4 @@ function normalizeQuote(raw: QuoteRecord): NormalizedQuote {
 - 本仓库未发现已配置的安装、运行、构建、检查或测试命令，也未发现代码、脚本或测试配置。
 - 文档内一次性规则校验：`项目初始化提示词.md` 提供 PowerShell 脚本，用于比较提示词与根 `AGENTS.md` 的规则区、检查 8 个规则小节和代码块数量，并检查同级 `CLAUDE.md`。执行目录为项目根目录，需设置实际的提示词路径。本次已在本仓库根目录执行适配路径后的脚本，结果见任务报告。
 - 消费方 Orca 运维命令：`启动主编排.md` 中记录 `orca orchestration worker-start --help`、`orca orchestration run-create`、`orca terminal rename`、`orca orchestration worker-start`、`orca orchestration check --wait --timeout-ms 90000`、诊断用 `worker-list` / `terminal read` / `terminal send`、完成后的 `worker-release` / `orca worktree rm`，以及普通 `git merge`。这些不是本仓库构建或测试命令；仅在用户明确启动编排、确认 CLI 与 agent 参数传递方式并建立验收记录后执行。本次未执行这些外部命令。
-- Orca 命令依赖 Orca CLI；OpenCode 模型取自 worker 实际读取的 `opencode.json` / `opencode.jsonc`。协调端不得传递模型参数或修改模型配置；无法确认有效配置时按流程暂停派发。
+- Orca 命令依赖 Orca CLI；worker 的模型由其启动环境决定。协调端不得传递模型参数、读取或修改模型配置；确认模型配置不是派发前置条件，worker 启动后反馈模型配置错误时按流程保留现场并报告。
